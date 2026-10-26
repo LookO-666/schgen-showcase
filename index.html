@@ -1,68 +1,144 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#121713">
-  <meta name="description" content="SchGen 小规模复现展示：查看官方原题与已保存的电路原理图、PCB 版图和检查记录。">
-  <title>SchGen Lab · 电路设计展示</title>
-  <link rel="stylesheet" href="./styles.css">
-  <script src="./data.js" defer></script>
-  <script src="./app.js" defer></script>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>SchGen Lab · 电路设计工作台</title>
+  <link rel="stylesheet" href="./styles.css?v=d27c6684ff24">
 </head>
 <body>
-  <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <symbol id="icon-circuit" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M9 2v5m6-5v5M9 17v5m6-5v5M2 9h5m-5 6h5m10-6h5m-5 6h5"/></symbol>
-    <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
-    <symbol id="icon-fit" viewBox="0 0 24 24"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m6 0h6v-6"/></symbol>
-    <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></symbol>
+  <svg class="icons" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="circuit" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M9 2v5m6-5v5M9 17v5m6-5v5M2 9h5m-5 6h5m10-6h5m-5 6h5"/></symbol>
+    <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+    <symbol id="upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M4 16v5h16v-5"/></symbol>
+    <symbol id="code" viewBox="0 0 24 24"><path d="m7 7-5 5 5 5m10-10 5 5-5 5M14 4l-4 16"/></symbol>
+    <symbol id="fit" viewBox="0 0 24 24"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m6 0h6v-6"/></symbol>
   </svg>
   <header class="topbar">
-    <a class="brand" href="./" aria-label="SchGen Lab 首页"><svg><use href="#icon-circuit"/></svg>SchGen <span>Lab</span></a>
-    <span class="project-name">电路设计展示</span>
-    <span class="mode"><span aria-hidden="true"></span>静态展示</span>
+    <div class="brand"><span class="brand-icon"><svg><use href="#circuit"/></svg></span>SchGen <span>Lab</span></div>
+    <span class="project-name">电路设计工作台</span>
+    <span id="workbench-mode" class="mode">本机 · Colab GPU</span>
   </header>
   <main class="layout">
-    <aside class="design-pane" aria-labelledby="design-title">
-      <div class="intro">
-        <p class="eyebrow">小规模复现 · 案例展示</p>
-        <h1 id="design-title">从自然语言<br>到 PCB 版图</h1>
-        <p class="intro-description">从一句电路需求出发，查看原理图与 PCB 布局布线成果。</p>
-      </div>
-      <section class="examples-section" aria-labelledby="examples-title">
-        <div class="section-heading"><h2 id="examples-title">选择原题</h2><span id="example-count" class="muted"></span></div>
-        <div id="example-buttons" class="example-list" role="group" aria-label="电路案例"></div>
-      </section>
-      <section class="prompt-section" aria-labelledby="request-title">
-        <div class="section-heading"><h2 id="request-title">需求描述</h2><span id="source-label" class="source-label">官方数据集原题</span></div>
-        <div id="prompt-body" class="prompt-body" tabindex="0" aria-label="原题完整需求"></div>
-        <button id="toggle-prompt" class="prompt-toggle" type="button" aria-expanded="false" aria-controls="prompt-body"><span>展开完整原题</span><svg><use href="#icon-chevron"/></svg></button>
-      </section>
-      <div class="model-note"><svg aria-hidden="true"><use href="#icon-circuit"/></svg><div><strong id="model-label">MiniCPM5-2B · 第三轮 LoRA</strong><p>展示已保存结果，不执行模型推理或代码。</p></div></div>
-    </aside>
-    <section class="results-pane" aria-labelledby="result-title">
-      <div class="result-header"><div><p class="eyebrow">电路设计成果</p><h2 id="result-title">正在读取案例</h2></div><span class="saved-tag">预存成果</span></div>
-      <div class="process-strip" aria-label="成果处理流程"><span>自然语言需求</span><svg aria-hidden="true"><use href="#icon-arrow"/></svg><span>电路原理图</span><svg aria-hidden="true"><use href="#icon-arrow"/></svg><span>PCB 布局与布线</span></div>
-      <div class="preview-card">
-        <div class="preview-heading"><div class="preview-tabs" role="tablist" aria-label="成果视图"><button id="tab-pcb" role="tab" type="button" aria-selected="true" aria-controls="result-view" tabindex="0">PCB 版图</button><button id="tab-schematic" role="tab" type="button" aria-selected="false" aria-controls="result-view" tabindex="-1">电路原理图</button></div><span id="view-description" class="view-description">顶视图 · 铜线与焊盘</span></div>
-        <div id="result-view" class="result-view" role="tabpanel" aria-labelledby="tab-pcb" tabindex="0" data-view="pcb" aria-busy="false">
-          <div id="image-inner" class="image-inner"><img id="result-image" alt="" draggable="false" hidden></div>
-          <div id="preview-empty" class="preview-empty"><svg aria-hidden="true"><use href="#icon-circuit"/></svg><p id="preview-message">正在读取已有成果…</p></div>
+    <section class="design-pane" aria-labelledby="design-title">
+      <div class="intro"><h1 id="design-title">从自然语言到PCB版图</h1><p>描述需求，生成原理图、PCB 版图与可编辑工程。</p></div>
+      <details id="connection-panel" class="connection-section" open>
+        <summary id="connection-title"><span id="connection-title-label">模型状态</span><span id="connection-badge" class="small-tag">检查中</span></summary>
+        <div class="connection-body">
+        <p class="runtime-model">MiniCPM5-2B <span>· 第三轮 LoRA</span></p>
+        <p id="connection-status" class="connection-status" role="status" aria-live="polite">正在检查服务状态…</p>
+        <div id="runtime-actions" class="runtime-actions"><button id="connect-live" class="secondary-button" type="button" disabled>启动 Colab 模型</button><button id="disconnect-live" class="quiet-button" type="button" disabled>释放 GPU</button></div>
+        <details id="connection-details" class="connection-details"><summary>运行详情</summary><pre id="connection-diagnostics"></pre><p id="runtime-note" class="runtime-note">使用结束后请释放 GPU，关闭网页不会释放。</p></details>
+        <div id="disconnect-confirm" class="disconnect-confirm" role="group" aria-labelledby="disconnect-confirm-title" hidden>
+          <strong id="disconnect-confirm-title">释放 GPU？</strong>
+          <p id="disconnect-confirm-note">所有访问者将断开模型。已保存结果保留，下次使用需重新加载。</p>
+          <div><button id="cancel-disconnect" class="quiet-button" type="button">继续使用</button><button id="confirm-disconnect" class="secondary-button" type="button">确认释放</button></div>
         </div>
-        <div class="preview-toolbar"><span id="image-caption" class="image-caption">已保存的电路成果</span><div class="zoom-controls" role="group" aria-label="预览缩放"><button id="zoom-out" type="button" aria-label="缩小预览" disabled>−</button><output id="zoom-value" aria-live="polite">100%</output><button id="zoom-in" type="button" aria-label="放大预览" disabled>+</button><span class="toolbar-separator"></span><button id="zoom-fit" type="button" aria-label="适应画布" title="适应画布" disabled><svg><use href="#icon-fit"/></svg></button></div></div>
-      </div>
-      <div id="metrics" class="metrics" aria-label="PCB 统计信息"></div>
-      <section class="checks-section" aria-labelledby="checks-title">
-        <div class="section-heading"><h3 id="checks-title">检查记录</h3><span class="muted">与当前展示成果对应</span></div>
-        <div id="check-summary" class="check-summary"></div>
-        <details id="ignored-checks" class="ignored-checks" hidden><summary id="ignored-title">未启用的检查规则</summary><ul id="ignored-list"></ul></details>
-        <p id="case-note" class="case-note"></p>
+        </div>
+      </details>
+      <section class="input-section" aria-labelledby="request-label">
+        <div class="section-line"><h2 id="request-label">需求描述</h2><span id="char-count">0 / 16000</span></div>
+        <div id="example-buttons" class="candidates" aria-label="PCB 演示电路需求"></div>
+        <details id="more-examples" class="more-examples" hidden><summary>更多示例 <span id="more-example-count"></span></summary><div id="more-example-buttons" class="candidates" aria-label="更多电路需求"></div></details>
+        <label class="sr-only" for="user-request">电路需求，支持中英文</label>
+        <div class="prompt-toolbar" role="group" aria-label="需求显示方式"><button id="prompt-preview-mode" type="button" aria-pressed="false" aria-controls="prompt-preview">预览</button><button id="prompt-edit-mode" type="button" aria-pressed="true" aria-controls="user-request">编辑</button><span>Markdown</span></div>
+        <textarea id="user-request" maxlength="16000" rows="7" spellcheck="false" placeholder="例如：为传感器板设计供电电路，输入 5 V，输出稳定的 3.3 V，最大负载 100 mA。"></textarea>
+        <div id="prompt-preview" class="markdown-body prompt-preview" aria-label="电路需求预览" tabindex="0" hidden></div>
+        <p id="input-source-note" class="field-note">支持中英文，可选择示例后修改需求。</p>
+        <button class="primary" id="generate-live" type="button" disabled><svg><use href="#circuit"/></svg>生成 PCB 原理图与版图<svg class="trailing"><use href="#arrow"/></svg></button>
+        <p id="live-status" class="live-status" role="status" aria-live="polite">启动模型后即可生成。</p>
+        <div class="job-actions"><button id="stop-live" class="secondary-button stop-button" type="button" hidden>停止生成</button><button id="resume-live" class="secondary-button" type="button" hidden>恢复查看任务</button></div>
+        <details id="live-progress" class="output-section generation-progress" data-state="submitting" open hidden>
+          <summary><span class="progress-title"><span class="progress-dot" aria-hidden="true"></span>模型输出</span><span id="live-phase" class="progress-phase" role="status">准备中</span></summary>
+          <div class="progress-meta"><span id="live-elapsed">已用 0 分 0 秒</span><span id="live-output-count">等待输出</span></div>
+          <div class="progress-activity" aria-hidden="true"><span></span></div>
+          <div id="live-output" class="markdown-body" aria-label="本次模型生成输出" tabindex="0"></div>
+        </details>
       </section>
-      <footer class="result-footer"><span>SchGen 方法的小规模复现展示</span><span>检查记录不替代电路功能与制造验证。</span></footer>
+      <details id="result-details" class="result-section fold-section" hidden><summary>生成详情</summary>
+        <div id="binding-state" class="binding-state"></div>
+        <details class="output-section"><summary id="input-summary">输入需求</summary><div id="actual-request" class="markdown-body"></div></details>
+        <details class="output-section"><summary>模型分析</summary><div id="reasoning" class="markdown-body"></div></details>
+        <details class="output-section"><summary>生成代码</summary><div class="code-toolbar"><span id="code-filename">generated.py</span><button id="copy-code" type="button">复制代码</button></div><pre><code id="generated-code"></code></pre></details>
+        <details class="output-section"><summary>运行记录</summary><dl id="run-record"></dl><pre id="diagnostic" class="prose-output"></pre><p class="record-note">包含生成参数、文件校验与执行结果。</p></details>
+      </details>
+      <details id="usage-guide" class="fold-section help-section"><summary>使用帮助</summary>
+        <div id="owner-help" class="owner-only"><ol><li>启动 Colab 模型，等待“已就绪”。首次登录请按本机终端提示完成 Google 授权。</li><li>填写电路需求，点击生成；自动核对电路连接并生成 PCB，缺少封装时按提示补充。</li><li>查看 PCB 版图与检查结果，下载可编辑 KiCad 工程。使用结束后点击“释放 GPU”。</li></ol>
+        <p class="model-note">使用当前账号的 Colab 额度，任务和结果保存在本机。</p></div>
+        <div id="guest-help" hidden><ol><li>模型未启动时，点击“启动 Colab 模型”，等待就绪。</li><li>选择示例或输入需求，点击生成；按流程图查看当前阶段。</li><li>查看原理图和 PCB，下载可编辑 KiCad 工程。</li></ol><p>使用分享者的 Colab 额度，无需登录 Google。多位访客共用一个模型，繁忙时请等待。</p></div>
+        <p>刷新页面可恢复查看当前任务。</p>
+      </details>
+    </section>
+    <section class="preview-pane circuit-results" aria-labelledby="preview-title">
+      <div class="preview-heading"><h2 id="preview-title">原理图与 PCB</h2><button id="import-result" class="quiet-button import-button" type="button"><svg><use href="#upload"/></svg>导入结果</button></div>
+      <input id="result-file" type="file" accept=".zip,application/zip" hidden>
+      <section id="workflow" class="workflow" aria-labelledby="workflow-title" data-state="waiting">
+        <div class="workflow-heading"><h3 id="workflow-title">生成流程</h3><span id="workflow-status" role="status" aria-live="polite">正在检查模型状态</span></div>
+        <ol class="workflow-steps" aria-label="当前任务处理阶段">
+          <li id="workflow-runtime" data-state="pending"><span class="workflow-node" aria-hidden="true">1</span><span class="workflow-label">连接 GPU</span><span id="workflow-runtime-state" class="workflow-step-state">待开始</span></li>
+          <li id="workflow-environment" data-state="pending"><span class="workflow-node" aria-hidden="true">2</span><span class="workflow-label">环境准备</span><span id="workflow-environment-state" class="workflow-step-state">待开始</span></li>
+          <li id="workflow-model" data-state="pending"><span class="workflow-node" aria-hidden="true">3</span><span class="workflow-label">模型加载</span><span id="workflow-model-state" class="workflow-step-state">待开始</span></li>
+          <li id="workflow-generation" data-state="pending"><span class="workflow-node" aria-hidden="true">4</span><span class="workflow-label">生成并执行代码</span><span id="workflow-generation-state" class="workflow-step-state">待开始</span></li>
+          <li id="workflow-receiving" data-state="pending"><span class="workflow-node" aria-hidden="true">5</span><span class="workflow-label">原理图接收</span><span id="workflow-receiving-state" class="workflow-step-state">待开始</span></li>
+          <li id="workflow-tidying" data-state="pending" title="将生成的原理图渲染为网页预览。"><span class="workflow-node" aria-hidden="true">6</span><span class="workflow-label">原理图渲染</span><span id="workflow-tidying-state" class="workflow-step-state">待开始</span></li>
+          <li id="workflow-connectivity" data-state="pending"><span class="workflow-node" aria-hidden="true">7</span><span class="workflow-label">网表核对</span><span id="workflow-connectivity-state" class="workflow-step-state">待开始</span></li>
+          <li id="workflow-footprints" data-state="pending"><span class="workflow-node" aria-hidden="true">8</span><span class="workflow-label">封装与板框</span><span id="workflow-footprints-state" class="workflow-step-state">待开始</span></li>
+          <li id="workflow-placement" data-state="pending"><span class="workflow-node" aria-hidden="true">9</span><span class="workflow-label">元件布局</span><span id="workflow-placement-state" class="workflow-step-state">待开始</span></li>
+          <li id="workflow-routing" data-state="pending"><span class="workflow-node" aria-hidden="true">10</span><span class="workflow-label">PCB 布线</span><span id="workflow-routing-state" class="workflow-step-state">待开始</span></li>
+          <li id="workflow-checks" data-state="pending"><span class="workflow-node" aria-hidden="true">11</span><span class="workflow-label">规则检查</span><span id="workflow-checks-state" class="workflow-step-state">待开始</span></li>
+          <li id="workflow-export" data-state="pending"><span class="workflow-node" aria-hidden="true">12</span><span class="workflow-label">结果导出</span><span id="workflow-export-state" class="workflow-step-state">待开始</span></li>
+        </ol>
+        <p id="workflow-detail">模型就绪后，填写需求并开始生成。</p>
+      </section>
+      <div class="canvas-info"><span id="canvas-context">生成后自动展示，可导入已有结果。</span></div>
+      <section id="schematic-panel" class="schematic-panel" aria-labelledby="schematic-title">
+      <div class="schematic-heading"><h2 id="schematic-title">原理图</h2><span id="preview-state" class="preview-state">等待结果</span></div>
+      <div id="preview-canvas" class="preview-canvas">
+        <div id="preview-empty" class="preview-empty"><span class="empty-icon"><svg><use href="#circuit"/></svg></span><h3>等待原理图</h3><p>生成完成后自动显示。</p></div>
+        <div id="image-stage" class="image-stage" hidden><img id="schematic-image" alt="本次生成的电路原理图" draggable="false"></div>
+      </div>
+      <div class="preview-toolbar"><div class="zoom-controls"><button id="zoom-out" type="button" aria-label="缩小" disabled>−</button><span id="zoom-value">100%</span><button id="zoom-in" type="button" aria-label="放大" disabled>+</button><span class="divider"></span><button id="zoom-fit" type="button" aria-label="适应画布" title="适应画布" disabled><svg><use href="#fit"/></svg></button></div><span>KiCad 原理图</span></div>
+      <p id="schematic-layout-status" class="import-status" role="status" aria-live="polite" hidden></p>
+      </section>
+      <p id="import-status" class="import-status" role="status" aria-live="polite"></p>
+      <section id="pcb-panel" class="pcb-panel" aria-labelledby="pcb-title" data-state="waiting" aria-busy="false">
+        <div class="pcb-heading"><div><h2 id="pcb-title">PCB 版图</h2></div><span id="pcb-state" class="small-tag">等待原理图</span></div>
+        <p id="pcb-status" class="pcb-status" role="status" aria-live="polite">原理图生成后，将自动开始 PCB 布局与布线。</p>
+        <form id="pcb-footprint-form" class="pcb-footprint-form" hidden><p>为以下元件选择封装，确保焊盘编号与引脚一致。</p><div id="pcb-footprints"></div></form>
+        <div class="pcb-actions"><button id="generate-pcb" class="download-button" type="button" hidden disabled><svg><use href="#circuit"/></svg><span id="generate-pcb-label">继续生成 PCB</span></button><button id="resume-pcb" class="quiet-button" type="button" hidden>恢复查看 PCB</button></div>
+        <div id="pcb-preview-wrap" class="pcb-preview-wrap">
+          <div id="pcb-preview-empty" class="pcb-preview-empty"><span class="empty-icon"><svg aria-hidden="true"><use href="#circuit"/></svg></span><h3 id="pcb-empty-title">PCB 版图将在这里展示</h3><p id="pcb-empty-detail">等待原理图，完成布局与布线后会自动更新预览。</p></div>
+          <img id="pcb-image" alt="本次原理图自动布局与布线后的 PCB 预览" draggable="false" hidden>
+          <p>PCB 顶视图 · 铜线与焊盘</p>
+        </div>
+        <section id="checks-panel" class="checks-panel" aria-labelledby="checks-title" hidden>
+          <div class="checks-heading"><h3 id="checks-title">检查结果</h3><button id="retry-checks" type="button" class="quiet-button" hidden>重新读取</button></div>
+          <p id="pcb-report" class="pcb-report" hidden></p>
+          <div id="quality-panel" class="quality-panel" hidden><span id="erc-badge" class="erc-badge"></span><p id="quality-note"></p></div>
+          <p id="checks-summary" class="checks-summary" hidden></p>
+          <p id="checks-status" class="checks-status" role="status"></p>
+          <div id="checks-content"></div>
+          <details id="pcb-details" class="pcb-details" hidden><summary>处理说明</summary><ul id="pcb-notes"></ul></details>
+        </section>
+        <div id="pcb-downloads" class="pcb-actions" hidden><button id="download-pcb-project" class="download-button" type="button"><svg><use href="#download"/></svg>下载可编辑 PCB 工程</button><button id="download-pcb-board" class="quiet-button" type="button">单独下载 PCB 文件</button></div>
+        <p class="pcb-scope-note">制板前请核对器件封装、电路功能和制造要求。</p>
+      </section>
+      <details id="source-files" class="source-files fold-section" hidden><summary>原理图文件</summary>
+        <div class="download-panel"><button id="download-schematic" class="download-button" type="button" disabled><svg><use href="#download"/></svg>下载当前原理图</button><button id="download-original-schematic" class="quiet-button" type="button" hidden>原始原理图</button><button id="download-result" class="quiet-button result-zip-button" type="button" hidden disabled>原始结果 ZIP</button></div>
+        <p class="scope-note">下载当前预览对应的原理图；原始文件另行保留。</p>
+      </details>
     </section>
   </main>
-  <p id="selection-status" class="sr-only" aria-live="polite"></p>
-  <noscript><p class="noscript">请启用 JavaScript 以切换原题并查看已有电路成果。本页面不运行模型推理。</p></noscript>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <script src="./vendor/marked.js?v=b82b9334406d"></script>
+  <script src="./vendor/purify.js?v=cd37898f9782"></script>
+  <script src="./markdown.js?v=600104c30eec"></script>
+  <script src="./check-reports.js?v=eda7af73093b"></script>
+  <script src="./examples.js?v=e09e786dd079"></script>
+  <script src="./data.js?v=0d9b664026bb"></script>
+  <script src="./app.js?v=2c148e94f869"></script>
 </body>
 </html>

@@ -50,7 +50,135 @@ window.SCHGEN_SHOWCASE = {
         "boardWidthMm": 11.3,
         "boardHeightMm": 13.9
       },
-      "note": "已保存的模型输出与自动布局布线结果。保留原有 ERC 提示；尚未验证实际电路功能。"
+      "note": "已保存的模型输出与自动布局布线结果。保留原有 ERC 提示；尚未验证实际电路功能。",
+      "checks": {
+        "erc": {
+          "kind": "erc",
+          "available": true,
+          "date": "2026-10-21T16:30:52",
+          "units": "mm",
+          "ignored": [
+            {
+              "key": "single_global_label",
+              "description": "Global label only appears once in the schematic"
+            },
+            {
+              "key": "four_way_junction",
+              "description": "Four connection points are joined together"
+            },
+            {
+              "key": "simulation_model_issue",
+              "description": "SPICE model issue"
+            },
+            {
+              "key": "footprint_filter",
+              "description": "Assigned footprint doesn't match footprint filters"
+            }
+          ],
+          "counts": {
+            "errors": 2,
+            "warnings": 0,
+            "exclusions": 0,
+            "others": 0,
+            "violations": 2
+          },
+          "groups": [
+            {
+              "key": "violations",
+              "label": "电气规则问题",
+              "issues": [
+                {
+                  "severity": "error",
+                  "type": "power_pin_not_driven",
+                  "description": "Input Power pin not driven by any Output Power pins",
+                  "sheet": "/",
+                  "items": [
+                    {
+                      "description": "Symbol #PWR1 Pin 1 [Power input, Line]",
+                      "uuid": "1094c936-fbab-4417-97b0-eb6e5bc1951c",
+                      "pos": {
+                        "x": 129.54,
+                        "y": 111.76
+                      }
+                    }
+                  ]
+                },
+                {
+                  "severity": "error",
+                  "type": "power_pin_not_driven",
+                  "description": "Input Power pin not driven by any Output Power pins",
+                  "sheet": "/",
+                  "items": [
+                    {
+                      "description": "Symbol #PWR2 Pin 1 [Power input, Line]",
+                      "uuid": "526f700e-1e68-47d4-9afb-d65d4a48c412",
+                      "pos": {
+                        "x": 149.86,
+                        "y": 87.63
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "drc": {
+          "kind": "drc",
+          "available": true,
+          "date": "2026-10-21T16:30:57",
+          "units": "mm",
+          "ignored": [
+            {
+              "key": "missing_courtyard",
+              "description": "Footprint has no courtyard defined"
+            },
+            {
+              "key": "track_not_centered_on_via",
+              "description": "Track endpoint not centered on via"
+            },
+            {
+              "key": "tuning_profile_track_geometries",
+              "description": "Tuning profile track geometries"
+            },
+            {
+              "key": "footprint_filters_mismatch",
+              "description": "Footprint doesn't match symbol's footprint filters"
+            },
+            {
+              "key": "footprint_type_mismatch",
+              "description": "Footprint component type doesn't match footprint pads"
+            }
+          ],
+          "counts": {
+            "errors": 0,
+            "warnings": 0,
+            "exclusions": 0,
+            "others": 0,
+            "violations": 0,
+            "unconnected_items": 0,
+            "schematic_parity": 0
+          },
+          "groups": [
+            {
+              "key": "violations",
+              "label": "PCB 规则问题",
+              "issues": []
+            },
+            {
+              "key": "unconnected_items",
+              "label": "未连接项目",
+              "issues": []
+            },
+            {
+              "key": "schematic_parity",
+              "label": "原理图一致性问题",
+              "issues": []
+            }
+          ]
+        },
+        "source": "已保存结果"
+      }
     },
     {
       "id": "ldo-enable",
@@ -99,7 +227,207 @@ window.SCHGEN_SHOWCASE = {
         "boardWidthMm": 21.5,
         "boardHeightMm": 15.3
       },
-      "note": "已保存的模型输出与自动布局布线结果。保留原有 ERC 提示；尚未验证实际电路功能。"
+      "note": "已保存的模型输出与自动布局布线结果。保留原有 ERC 提示；尚未验证实际电路功能。",
+      "checks": {
+        "erc": {
+          "kind": "erc",
+          "available": true,
+          "date": "2026-10-20T13:24:25",
+          "units": "mm",
+          "ignored": [
+            {
+              "key": "single_global_label",
+              "description": "Global label only appears once in the schematic"
+            },
+            {
+              "key": "four_way_junction",
+              "description": "Four connection points are joined together"
+            },
+            {
+              "key": "simulation_model_issue",
+              "description": "SPICE model issue"
+            },
+            {
+              "key": "footprint_filter",
+              "description": "Assigned footprint doesn't match footprint filters"
+            }
+          ],
+          "counts": {
+            "errors": 5,
+            "warnings": 1,
+            "exclusions": 0,
+            "others": 0,
+            "violations": 6
+          },
+          "groups": [
+            {
+              "key": "violations",
+              "label": "电气规则问题",
+              "issues": [
+                {
+                  "severity": "error",
+                  "type": "power_pin_not_driven",
+                  "description": "Input Power pin not driven by any Output Power pins",
+                  "sheet": "/",
+                  "items": [
+                    {
+                      "description": "Symbol #PWR1 Pin 1 [Power input, Line]",
+                      "uuid": "6a5c7ea1-2306-4d21-a315-ab83f11e1705",
+                      "pos": {
+                        "x": 105.41,
+                        "y": 93.98
+                      }
+                    }
+                  ]
+                },
+                {
+                  "severity": "error",
+                  "type": "power_pin_not_driven",
+                  "description": "Input Power pin not driven by any Output Power pins",
+                  "sheet": "/",
+                  "items": [
+                    {
+                      "description": "Symbol #PWR2 Pin 1 [Power input, Line]",
+                      "uuid": "c7f4212c-5c48-4f4c-a47c-0c8801beeb8f",
+                      "pos": {
+                        "x": 105.41,
+                        "y": 107.95
+                      }
+                    }
+                  ]
+                },
+                {
+                  "severity": "error",
+                  "type": "power_pin_not_driven",
+                  "description": "Input Power pin not driven by any Output Power pins",
+                  "sheet": "/",
+                  "items": [
+                    {
+                      "description": "Symbol U1 Pin 1 [VIN, Power input, Line]",
+                      "uuid": "43f458b7-dafb-4446-ac52-7bd930961a79",
+                      "pos": {
+                        "x": 142.24,
+                        "y": 97.79
+                      }
+                    }
+                  ]
+                },
+                {
+                  "severity": "error",
+                  "type": "pin_not_connected",
+                  "description": "Pin not connected",
+                  "sheet": "/",
+                  "items": [
+                    {
+                      "description": "Symbol U1 Pin 3 [EN, Input, Line]",
+                      "uuid": "2499436e-92db-4224-9fa8-f32a28992f3a",
+                      "pos": {
+                        "x": 142.24,
+                        "y": 100.33
+                      }
+                    }
+                  ]
+                },
+                {
+                  "severity": "error",
+                  "type": "pin_not_driven",
+                  "description": "Input pin not driven by any Output pins",
+                  "sheet": "/",
+                  "items": [
+                    {
+                      "description": "Symbol U1 Pin 3 [EN, Input, Line]",
+                      "uuid": "2499436e-92db-4224-9fa8-f32a28992f3a",
+                      "pos": {
+                        "x": 142.24,
+                        "y": 100.33
+                      }
+                    }
+                  ]
+                },
+                {
+                  "severity": "warning",
+                  "type": "multiple_net_names",
+                  "description": "Both EN and VCC are attached to the same items; EN will be used in the netlist",
+                  "sheet": "/",
+                  "items": [
+                    {
+                      "description": "Global Label 'EN'",
+                      "uuid": "ddcc7be7-eca5-4ed2-8661-1c5413be5570",
+                      "pos": {
+                        "x": 115.57,
+                        "y": 99.06
+                      }
+                    },
+                    {
+                      "description": "Symbol #PWR1 Pin 1 [Power input, Line]",
+                      "uuid": "6a5c7ea1-2306-4d21-a315-ab83f11e1705",
+                      "pos": {
+                        "x": 105.41,
+                        "y": 93.98
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "drc": {
+          "kind": "drc",
+          "available": true,
+          "date": "2026-10-20T13:24:31",
+          "units": "mm",
+          "ignored": [
+            {
+              "key": "missing_courtyard",
+              "description": "Footprint has no courtyard defined"
+            },
+            {
+              "key": "track_not_centered_on_via",
+              "description": "Track endpoint not centered on via"
+            },
+            {
+              "key": "tuning_profile_track_geometries",
+              "description": "Tuning profile track geometries"
+            },
+            {
+              "key": "footprint_filters_mismatch",
+              "description": "Footprint doesn't match symbol's footprint filters"
+            },
+            {
+              "key": "footprint_type_mismatch",
+              "description": "Footprint component type doesn't match footprint pads"
+            }
+          ],
+          "counts": {
+            "errors": 0,
+            "warnings": 0,
+            "exclusions": 0,
+            "others": 0,
+            "violations": 0,
+            "unconnected_items": 0,
+            "schematic_parity": 0
+          },
+          "groups": [
+            {
+              "key": "violations",
+              "label": "PCB 规则问题",
+              "issues": []
+            },
+            {
+              "key": "unconnected_items",
+              "label": "未连接项目",
+              "issues": []
+            },
+            {
+              "key": "schematic_parity",
+              "label": "原理图一致性问题",
+              "issues": []
+            }
+          ]
+        },
+        "source": "已保存结果"
+      }
     },
     {
       "id": "led-jumper",
@@ -148,7 +476,135 @@ window.SCHGEN_SHOWCASE = {
         "boardWidthMm": 14.7,
         "boardHeightMm": 13.4
       },
-      "note": "已保存的模型输出与自动布局布线结果。保留原有 ERC 提示；尚未验证实际电路功能。"
+      "note": "已保存的模型输出与自动布局布线结果。保留原有 ERC 提示；尚未验证实际电路功能。",
+      "checks": {
+        "erc": {
+          "kind": "erc",
+          "available": true,
+          "date": "2026-10-19T15:52:58",
+          "units": "mm",
+          "ignored": [
+            {
+              "key": "single_global_label",
+              "description": "Global label only appears once in the schematic"
+            },
+            {
+              "key": "four_way_junction",
+              "description": "Four connection points are joined together"
+            },
+            {
+              "key": "simulation_model_issue",
+              "description": "SPICE model issue"
+            },
+            {
+              "key": "footprint_filter",
+              "description": "Assigned footprint doesn't match footprint filters"
+            }
+          ],
+          "counts": {
+            "errors": 2,
+            "warnings": 0,
+            "exclusions": 0,
+            "others": 0,
+            "violations": 2
+          },
+          "groups": [
+            {
+              "key": "violations",
+              "label": "电气规则问题",
+              "issues": [
+                {
+                  "severity": "error",
+                  "type": "power_pin_not_driven",
+                  "description": "Input Power pin not driven by any Output Power pins",
+                  "sheet": "/",
+                  "items": [
+                    {
+                      "description": "Symbol #PWR1 Pin 1 [Power input, Line]",
+                      "uuid": "c9071525-8edf-4eb1-a611-23a6dce43bd6",
+                      "pos": {
+                        "x": 149.86,
+                        "y": 69.85
+                      }
+                    }
+                  ]
+                },
+                {
+                  "severity": "error",
+                  "type": "power_pin_not_driven",
+                  "description": "Input Power pin not driven by any Output Power pins",
+                  "sheet": "/",
+                  "items": [
+                    {
+                      "description": "Symbol #PWR2 Pin 1 [Power input, Line]",
+                      "uuid": "ff11b51a-892d-4b27-a399-adeec0497894",
+                      "pos": {
+                        "x": 149.86,
+                        "y": 110.49
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "drc": {
+          "kind": "drc",
+          "available": true,
+          "date": "2026-10-19T15:53:02",
+          "units": "mm",
+          "ignored": [
+            {
+              "key": "missing_courtyard",
+              "description": "Footprint has no courtyard defined"
+            },
+            {
+              "key": "track_not_centered_on_via",
+              "description": "Track endpoint not centered on via"
+            },
+            {
+              "key": "tuning_profile_track_geometries",
+              "description": "Tuning profile track geometries"
+            },
+            {
+              "key": "footprint_filters_mismatch",
+              "description": "Footprint doesn't match symbol's footprint filters"
+            },
+            {
+              "key": "footprint_type_mismatch",
+              "description": "Footprint component type doesn't match footprint pads"
+            }
+          ],
+          "counts": {
+            "errors": 0,
+            "warnings": 0,
+            "exclusions": 0,
+            "others": 0,
+            "violations": 0,
+            "unconnected_items": 0,
+            "schematic_parity": 0
+          },
+          "groups": [
+            {
+              "key": "violations",
+              "label": "PCB 规则问题",
+              "issues": []
+            },
+            {
+              "key": "unconnected_items",
+              "label": "未连接项目",
+              "issues": []
+            },
+            {
+              "key": "schematic_parity",
+              "label": "原理图一致性问题",
+              "issues": []
+            }
+          ]
+        },
+        "source": "已保存结果"
+      }
     }
   ]
 };
