@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="theme-color" content="#121713">
+  <meta name="description" content="SchGen 小规模复现展示：查看官方原题与已保存的电路原理图、PCB 版图和检查记录。">
+  <title>SchGen Lab · 电路设计展示</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./data.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="icon-circuit" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M9 2v5m6-5v5M9 17v5m6-5v5M2 9h5m-5 6h5m10-6h5m-5 6h5"/></symbol>
+    <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+    <symbol id="icon-fit" viewBox="0 0 24 24"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m6 0h6v-6"/></symbol>
+    <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></symbol>
+  </svg>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="SchGen Lab 首页"><svg><use href="#icon-circuit"/></svg>SchGen <span>Lab</span></a>
+    <span class="project-name">电路设计展示</span>
+    <span class="mode"><span aria-hidden="true"></span>静态展示</span>
+  </header>
+  <main class="layout">
+    <aside class="design-pane" aria-labelledby="design-title">
+      <div class="intro">
+        <p class="eyebrow">小规模复现 · 案例展示</p>
+        <h1 id="design-title">从自然语言<br>到 PCB 版图</h1>
+        <p class="intro-description">从一句电路需求出发，查看原理图与 PCB 布局布线成果。</p>
+      </div>
+      <section class="examples-section" aria-labelledby="examples-title">
+        <div class="section-heading"><h2 id="examples-title">选择原题</h2><span id="example-count" class="muted"></span></div>
+        <div id="example-buttons" class="example-list" role="group" aria-label="电路案例"></div>
+      </section>
+      <section class="prompt-section" aria-labelledby="request-title">
+        <div class="section-heading"><h2 id="request-title">需求描述</h2><span id="source-label" class="source-label">官方数据集原题</span></div>
+        <div id="prompt-body" class="prompt-body" tabindex="0" aria-label="原题完整需求"></div>
+        <button id="toggle-prompt" class="prompt-toggle" type="button" aria-expanded="false" aria-controls="prompt-body"><span>展开完整原题</span><svg><use href="#icon-chevron"/></svg></button>
+      </section>
+      <div class="model-note"><svg aria-hidden="true"><use href="#icon-circuit"/></svg><div><strong id="model-label">MiniCPM5-2B · 第三轮 LoRA</strong><p>展示已保存结果，不执行模型推理或代码。</p></div></div>
+    </aside>
+    <section class="results-pane" aria-labelledby="result-title">
+      <div class="result-header"><div><p class="eyebrow">电路设计成果</p><h2 id="result-title">正在读取案例</h2></div><span class="saved-tag">预存成果</span></div>
+      <div class="process-strip" aria-label="成果处理流程"><span>自然语言需求</span><svg aria-hidden="true"><use href="#icon-arrow"/></svg><span>电路原理图</span><svg aria-hidden="true"><use href="#icon-arrow"/></svg><span>PCB 布局与布线</span></div>
+      <div class="preview-card">
+        <div class="preview-heading"><div class="preview-tabs" role="tablist" aria-label="成果视图"><button id="tab-pcb" role="tab" type="button" aria-selected="true" aria-controls="result-view" tabindex="0">PCB 版图</button><button id="tab-schematic" role="tab" type="button" aria-selected="false" aria-controls="result-view" tabindex="-1">电路原理图</button></div><span id="view-description" class="view-description">顶视图 · 铜线与焊盘</span></div>
+        <div id="result-view" class="result-view" role="tabpanel" aria-labelledby="tab-pcb" tabindex="0" data-view="pcb" aria-busy="false">
+          <div id="image-inner" class="image-inner"><img id="result-image" alt="" draggable="false" hidden></div>
+          <div id="preview-empty" class="preview-empty"><svg aria-hidden="true"><use href="#icon-circuit"/></svg><p id="preview-message">正在读取已有成果…</p></div>
+        </div>
+        <div class="preview-toolbar"><span id="image-caption" class="image-caption">已保存的电路成果</span><div class="zoom-controls" role="group" aria-label="预览缩放"><button id="zoom-out" type="button" aria-label="缩小预览" disabled>−</button><output id="zoom-value" aria-live="polite">100%</output><button id="zoom-in" type="button" aria-label="放大预览" disabled>+</button><span class="toolbar-separator"></span><button id="zoom-fit" type="button" aria-label="适应画布" title="适应画布" disabled><svg><use href="#icon-fit"/></svg></button></div></div>
+      </div>
+      <div id="metrics" class="metrics" aria-label="PCB 统计信息"></div>
+      <section class="checks-section" aria-labelledby="checks-title">
+        <div class="section-heading"><h3 id="checks-title">检查记录</h3><span class="muted">与当前展示成果对应</span></div>
+        <div id="check-summary" class="check-summary"></div>
+        <details id="ignored-checks" class="ignored-checks" hidden><summary id="ignored-title">未启用的检查规则</summary><ul id="ignored-list"></ul></details>
+        <p id="case-note" class="case-note"></p>
+      </section>
+      <footer class="result-footer"><span>SchGen 方法的小规模复现展示</span><span>检查记录不替代电路功能与制造验证。</span></footer>
+    </section>
+  </main>
+  <p id="selection-status" class="sr-only" aria-live="polite"></p>
+  <noscript><p class="noscript">请启用 JavaScript 以切换原题并查看已有电路成果。本页面不运行模型推理。</p></noscript>
+</body>
+</html>
